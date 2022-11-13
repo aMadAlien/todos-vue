@@ -2,39 +2,18 @@
   <div>
     <h1>Todo List</h1>
     <hr/>
-    <AddTodo @add_task="addTask"  />
-    <TodoList @remove_task="removeTask" v-bind:data="data"/>
+    <aside>
+      <router-link class="link" to='/'>Home Page</router-link>
+      <router-link class="link" to='/main'>Main Tasks</router-link>
+      <router-link class="link" to='/others'>Others</router-link>
+    </aside>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import TodoList from '@/components/TodoList'
-import AddTodo from '@/components/AddTodo'
-
 export default {
   name: 'App',
-  data() {
-    return {
-      data: []
-    }
-  },
-  mounted() {
-    fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
-      .then(response => response.json())
-      .then(json => this.data = json)
-  },
-  components: {
-    TodoList,
-    AddTodo
-  },
-  methods: {
-    addTask(title) {
-      this.data.push({id: this.data.length+1, title: title, completed: false});
-    },
-    removeTask(id) {
-      this.data = this.data.filter(item => item.id !== id)
-    }
-  }
 }
 </script>
 
@@ -46,5 +25,22 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+aside {
+  width: 20%;
+  padding: 1rem .5rem;
+  margin-right: .5rem;
+  float: left;
+  box-shadow: inset -10px 0 5px -5px #29627e;
+}
+
+.link {
+  display: block;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
