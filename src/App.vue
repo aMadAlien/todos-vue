@@ -1,15 +1,39 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Todo List</h1>
+    <hr/>
+    <AddTodo @add_task="addTask"  />
+    <TodoList @remove_task="removeTask" v-bind:data="data"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TodoList from '@/components/TodoList'
+import AddTodo from '@/components/AddTodo'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      data: []
+    }
+  },
+  mounted() {
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
+      .then(response => response.json())
+      .then(json => this.data = json)
+  },
   components: {
-    HelloWorld
+    TodoList,
+    AddTodo
+  },
+  methods: {
+    addTask(title) {
+      this.data.push({id: this.data.length+1, title: title, completed: false});
+    },
+    removeTask(id) {
+      this.data = this.data.filter(item => item.id !== id)
+    }
   }
 }
 </script>
